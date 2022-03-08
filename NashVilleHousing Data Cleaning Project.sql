@@ -1,3 +1,4 @@
+--Check the datasets
 Select *
 From PortfolioProject..NashVilleHousing
 
@@ -12,7 +13,6 @@ Update NashVilleHousing
 Set SaleDateConverted = Convert(Date,SaleDate)
 
 --Populate Property Address Data
-
 Select *
 From PortfolioProject..NashVilleHousing
 --where PropertyAddress is null
@@ -33,7 +33,7 @@ JOIN PortfolioProject..NashVilleHousing b
 	and a.[UniqueID ] <> b.[UniqueID ]
 Where a.PropertyAddress is null
 
--- Breaking out Address into Individual Columns (Address, City, State)
+-- Breaking out PropertyAddress into Individual Columns (Address, City, State)
 Select PropertyAddress
 From PortfolioProject..NashVilleHousing
 --where PropertyAddress is null
@@ -60,7 +60,7 @@ Select *
 From PortfolioProject..NashVilleHousing
 
 
-
+--Breaking out OwnerAddress into Individual Columns (Address, City, State)
 Select OwnerAddress
 From PortfolioProject..NashVilleHousing
 
@@ -106,13 +106,14 @@ SET SoldAsVacant = CASE When SoldAsVacant = 'Y' THEN 'Yes'
 	Else SoldAsVacant
 	END
 
+-- Check whether all the SoldAsVacant is standardized
 Select Distinct(SoldAsVacant),COUNT(SoldAsVacant)
 From PortfolioProject..NashVilleHousing
 Group by SoldAsVacant
 order by 2
 
---Remove Duplicants
 
+--Remove Duplicants
 WITH RowNumCTE AS(
 Select *,
 	ROW_NUMBER() OVER (
@@ -133,8 +134,6 @@ where row_num > 1
 
 
 -- Delete Unused Columns
-
-
 Select *
 From PortfolioProject..NashVilleHousing
 
